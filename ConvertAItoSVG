@@ -1,0 +1,23 @@
+// Select input folder
+var inputFolder = Folder.selectDialog("Select folder containing AI files");
+
+// Select output folder
+var outputFolder = Folder.selectDialog("Select output folder");
+
+// Get all AI files in input folder
+var aiFiles = inputFolder.getFiles("*.ai");
+
+// Save each AI file as an SVG in the output folder with the same filename
+for (var i = 0; i < aiFiles.length; i++) {
+  var aiFile = aiFiles[i];
+  var doc = app.open(aiFile);
+  var svgFile = new File(
+    outputFolder + "/" + aiFile.name.replace(/\.[^\.]+$/, "") + ".svg"
+  );
+  var svgOptions = new ExportOptionsSVG();
+  doc.exportFile(svgFile, ExportType.SVG, svgOptions);
+  doc.close();
+}
+
+// Alert user when done
+alert("Batch conversion complete.");
